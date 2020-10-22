@@ -2,7 +2,7 @@ class Peliculas{
   List<Pelicula> items;
 Peliculas(){
 }
-Peliculas.jsonfromJsonList(List<dynamic> jsonlist){
+Peliculas.fromJsonList(List<dynamic> jsonlist){
   if(jsonlist==null) return ;
   for (var item in jsonlist) {
     final pelicula = Pelicula.fromJsonMap(item);
