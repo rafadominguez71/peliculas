@@ -5,8 +5,6 @@ class HomePage extends StatelessWidget {
     final peliculasProvider = new PeliculasProvider();
   @override
   Widget build(BuildContext context) {
-      final _screensize = MediaQuery.of(context).size;
-    
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -19,17 +17,16 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
-      body: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(left:25.0),
-             width: _screensize.width*0.7,
-            height:_screensize.height*0.5,
-            child: _swiperTarjetas(),
-          )
-        ],
-      )
-      );
+      body: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _swiperTarjetas(),
+           _popular(context),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _swiperTarjetas() {
@@ -49,7 +46,27 @@ class HomePage extends StatelessWidget {
      
     },
   );
-    // return 
+  }
 
+
+  Widget _popular(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      child: Column(
+        children: [
+          Text('Populares', style: Theme.of(context).textTheme.subtitle1),
+          // Text('Populares', style: Theme.of(context).textTheme.headline6)
+          FutureBuilder(
+            future: peliculasProvider.getPopulares(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              snapshot.data.forEach((p)=>print(p.title));
+              return Container(
+
+              );
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
