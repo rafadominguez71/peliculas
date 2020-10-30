@@ -19,13 +19,14 @@ class PeliculaDetalle extends StatelessWidget {
                   SizedBox(height:10.0),
                   _posterTitulo(context, pelicula),
                   _descripcion(pelicula),
+                   _crearCasting(pelicula),
                 ]
  
               ),
             )
           ];
         },
-        body: _crearCasting(pelicula),
+        body: Text(''),
       ),
     );
   }
@@ -131,7 +132,7 @@ class PeliculaDetalle extends StatelessWidget {
   Widget _actorTarjeta(Actor actor){
     return Container(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+       mainAxisAlignment: MainAxisAlignment.end,
         children: [
           ClipRRect(
             borderRadius : BorderRadius.circular(20.0),
