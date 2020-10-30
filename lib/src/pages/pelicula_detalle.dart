@@ -96,6 +96,7 @@ class PeliculaDetalle extends StatelessWidget {
      child: Text(
        pelicula.overview,
        textAlign: TextAlign.justify,
+       style: TextStyle(fontFamily: 'descripcion', fontSize: 14.0),
      ),
    );
  }
@@ -146,6 +147,7 @@ class PeliculaDetalle extends StatelessWidget {
           Text(
             actor.name,
             overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontFamily: 'nombreactor'),
           )
         ],
       ),
