@@ -3,11 +3,11 @@ import 'package:peliculas/src/models/actores_model.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:peliculas/src/models/pelicula_model.dart';
-
+import 'package:peliculas/auth/secrets.dart';
 
 class PeliculasProvider {
 
-  ***REMOVED***
+  String _apikey   = my_key;
   String _url      = 'api.themoviedb.org';
   String _language = 'es-ES';
 
