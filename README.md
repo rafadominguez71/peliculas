@@ -1,12 +1,11 @@
 # peliculas
 
-A new Flutter project.
+Proyecto flutter de peliculas cines/populares
 
 ## Getting Started
+Necesitareis una api key en https://www.themoviedb.org/. 
+Os creareis un perfil, y crear API. Os daran una clave. Esa clave teneis que guardarla en un archivo .dart con la variable my_key para que pueda ser leido por el provider
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
 
 - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
