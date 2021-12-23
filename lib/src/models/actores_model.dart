@@ -1,4 +1,5 @@
 class Cast{
+  // ignore: deprecated_member_use
   List<Actor> actores=new List();
   Cast.fromJsonList(List <dynamic> jsonList){
     if ( jsonList == null ) return;

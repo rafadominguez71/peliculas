@@ -4,76 +4,89 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:peliculas/src/models/pelicula_model.dart';
 import 'package:peliculas/auth/secrets.dart';
+import 'package:peliculas/src/models/video_model.dart';
 
 class PeliculasProvider {
-
-  String _apikey   = my_key;
-  String _url      = 'api.themoviedb.org';
+  String _apikey = my_key;
+  String _url = 'api.themoviedb.org';
   String _language = 'es-ES';
 
   int _popularesPage = 0;
-  bool _cargando     = false;
+  bool _cargando = false;
 
+  // ignore: deprecated_member_use
   List<Pelicula> _populares = new List();
 
-  final _popularesStreamController = StreamController<List<Pelicula>>.broadcast();
-  Function(List<Pelicula>) get popularesSink => _popularesStreamController.sink.add;
-  Stream<List<Pelicula>> get popularesStream => _popularesStreamController.stream;
-
+  final _popularesStreamController =
+      StreamController<List<Pelicula>>.broadcast();
+  Function(List<Pelicula>) get popularesSink =>
+      _popularesStreamController.sink.add;
+  Stream<List<Pelicula>> get popularesStream =>
+      _popularesStreamController.stream;
 
   void disposeStreams() {
     _popularesStreamController?.close();
   }
 
-
   Future<List<Pelicula>> _procesarRespuesta(Uri url) async {
-  
-    final resp = await http.get( url );
+    final resp = await http.get(url);
     final decodedData = json.decode(resp.body);
     final peliculas = new Peliculas.fromJsonList(decodedData['results']);
     return peliculas.items;
   }
+
   Future<List<Pelicula>> getEnCines() async {
-    final url = Uri.https(_url, '3/movie/now_playing', {
-      'api_key'  : _apikey,
-      'language' : _language
-    });
+    final url = Uri.https(_url, '3/movie/now_playing',
+        {'api_key': _apikey, 'language': _language});
     return await _procesarRespuesta(url);
   }
 
   Future<List<Pelicula>> getPopulares() async {
-    
-    if ( _cargando ) return [];
+    if (_cargando) return [];
     _cargando = true;
     _popularesPage++;
     final url = Uri.https(_url, '3/movie/popular', {
-      'api_key'  : _apikey,
-      'language' : _language,
-      'page'     : _popularesPage.toString()
+      'api_key': _apikey,
+      'language': _language,
+      'page': _popularesPage.toString()
     });
     final resp = await _procesarRespuesta(url);
 
     _populares.addAll(resp);
-    popularesSink( _populares );
+    popularesSink(_populares);
     _cargando = false;
     return resp;
   }
+
   Future<List<Actor>> getCast(String idpelicula) async {
     final url = Uri.https(_url, '3/movie/$idpelicula/credits', {
-      'api_key'  : _apikey,
-      'language' : _language,
+      'api_key': _apikey,
+      'language': _language,
     });
-    final resp = await http.get( url );
+    final resp = await http.get(url);
     final decodedData = json.decode(resp.body);
     final cast = new Cast.fromJsonList(decodedData['cast']);
+    //print(cast.actores);
     return cast.actores;
   }
- Future<List<Pelicula>> buscarPelicula(String query) async {
-    final url = Uri.https(_url, '3/search/movie', {
-      'api_key'  : _apikey,
-      'language' : _language,
-      'query' : query
+
+    // ignore: missing_return
+    Future<Video> trailerPelicula(String idpelicula) async {
+    final url = Uri.https(_url, '3/movie/$idpelicula/videos', {
+      'api_key': _apikey,
+      'language': _language,
     });
+    final resp = await http.get(url);
+    final decodedData = json.decode(resp.body);
+    final video = new VideoModel.fromJsonList(decodedData['results']);
+    //print(video.videos[0].key);
+    if(video.videos.isNotEmpty) return video.videos[0];
+    }
+  Future<List<Pelicula>> buscarPelicula(String query) async {
+    final url = Uri.https(_url, '3/search/movie',
+        {'api_key': _apikey, 'language': _language, 'query': query});
     return await _procesarRespuesta(url);
   }
+    
 }
+
